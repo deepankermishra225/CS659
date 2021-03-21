@@ -1,0 +1,156 @@
+    #include <bits/stdc++.h>
+    using namespace std;
+    #define ll long long
+    #define pb push_back
+    #define F first
+    #define S second
+    #define all(c)  c.begin(), c.end()
+    #define llv vector< ll >
+    #define mp make_pair
+    #define endl  " 0"<< "\n"
+    
+    ll N=5 , R=2 , L=8 ;
+
+    ll X(ll t , ll r , ll x , ll y){
+        return t*R*N*N + r*N*N + x*N + y + 1 ;
+    }
+
+
+    int main(){
+        #ifndef ONLINE_JUDGE
+        freopen("input.txt", "r", stdin);
+        freopen("output.txt", "w", stdout);
+        #endif
+        ios::sync_with_stdio(0);
+        cin.tie(0); cout.tie(0);
+            
+           // constraint for initial state
+           // cout << "for initial state" << "\n" ;
+            cout << X(0,0,0,0) << endl ;
+            for(int x=0 ; x<N ; x++){
+                for(int y=0 ; y<N ; y++){
+                    if(x==0 && y==0)continue ;
+                    cout << -X(0,0,x,y) << endl ;
+                }
+            }
+            
+            cout << X(0,1,4,4) << endl ;
+            for(int x=0 ; x<N ; x++){
+                for(int y=0 ; y<N ; y++){
+                    if(x==4 && y==4)continue ;
+                    cout << -X(0,1,x,y) << endl ;
+                }
+            }
+          //  cout << "for final state" << "\n" ;
+            //constraint for final state
+            cout << X(L,0,4,4) << endl ;
+            for(int x=0 ; x<N ; x++){
+                for(int y=0 ; y<N ; y++){
+                    if(x==4 && y==4)continue ;
+                    cout << -X(L,0,x,y) << endl ;
+                }
+            }
+            cout << X(L,1,0,0) << endl ;
+            for(int x=0 ; x<N ; x++){
+                for(int y=0 ; y<N ; y++){
+                    if(x==0 && y==0)continue ;
+                    cout << -X(L,1,x,y) << endl ;
+                }
+            }
+
+            //cout << "constraints for motion primitives" << "\n" ;
+            for(int r=0 ; r<R ; r++){
+              for(int t=0 ; t<L ; t++){
+                for(int x=0 ; x<N ; x++){
+                    for(int y=0 ; y<N ; y++){
+                        cout << -X(t,r,x,y) << " " ;
+                        cout << X(t+1,r,x,y)  ;
+                        if(x<N-1) cout << " " << X(t+1,r,x+1,y) ;
+                        if(y<N-1) cout << " " << X(t+1,r,x,y+1) ;
+                        if(x>=1)cout << " " << X(t+1,r,x-1,y) ;
+                        if(y>=1)cout << " " << X(t+1,r,x,y-1) ;
+                        cout << endl ;
+                    }
+                } 
+              }
+            }
+
+            //cout << "constraints for obstacle avoidance" << "\n" ;
+            for(int r= 0 ; r<R ; r++){
+               for(int t=0 ; t<=L ; t++){
+                 cout << -X(t,r,2,0) << endl ;
+                 cout << -X(t,r,3,0) << endl ;
+                 cout << -X(t,r,1,2) << endl ;
+                 cout << -X(t,r,3,2) << endl ;
+                 cout << -X(t,r,1,4) << endl ;
+                 cout << -X(t,r,2,4) << endl ;
+             }
+           }
+
+          
+
+           //constraints for collision avoidance
+
+          // cout << "constraints for space collision avoidance" << "\n" ;
+            for(int t=0 ; t<=L ; t++){
+             for(int x=0 ; x<N ; x++){
+                for(int y=0 ; y<N ; y++){
+                    cout << -X(t,0,x,y) << " " << -X(t,1,x,y) << endl ;
+                }
+             }
+           }
+
+           //cout << "constraints for head on collision avoidance" << "\n" ;
+           
+           for(int t=0 ; t<L ; t++){
+            for(int x=0 ; x<N ; x++){
+                for(int y=0 ; y<N ; y++){
+                    
+                    //vertical constraint
+                    if(x+1<N){
+                      cout << -X(t,0,x+1,y) << " " ;
+                      cout << -X(t,1,x,y) << " " ;
+                      cout << -X(t+1,0,x,y) << " " ;
+                      cout << -X(t+1,1,x+1,y) << endl ;
+                    
+                      cout << -X(t,1,x+1,y) << " " ;
+                      cout << -X(t,0,x,y) << " " ;
+                      cout << -X(t+1,1,x,y) << " " ;
+                      cout << -X(t+1,0,x+1,y) << endl ;
+                    }
+
+                    //horizontal constraint
+                    if(y+1<N){
+                      cout << -X(t,0,x,y+1) << " " ;
+                      cout << -X(t,1,x,y) << " " ;
+                      cout << -X(t+1,0,x,y) << " " ;
+                      cout << -X(t+1,1,x,y+1) << endl ;
+                    
+                      cout << -X(t,1,x,y+1) << " " ;
+                      cout << -X(t,0,x,y) << " " ;
+                      cout << -X(t+1,1,x,y) << " " ;
+                      cout << -X(t+1,0,x,y+1) << endl ;
+                    }
+                }
+            }
+           }
+           
+           for(int r=0 ; r<R ; r++){
+            for(int t=0 ; t<=L ; t++){
+             for(int x=0 ; x<N ; x++){
+                for(int y=0 ; y<N ; y++){
+                   for(int xx=0 ; xx<N ; xx++){
+                    for(int yy=0 ; yy<N ; yy++){
+                         if(xx==x && yy==y)continue ;
+                         cout << -X(t,r,x,y) << " " << -X(t,r,xx,yy) << endl;
+                    }
+                   }
+                }
+             }
+           }
+           }
+
+
+     
+        return 0 ;
+    }
