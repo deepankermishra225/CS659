@@ -1,0 +1,83 @@
+    #include <bits/stdc++.h>
+    using namespace std;
+    #define ll long long
+    #define pb push_back
+    #define F first
+    #define S second
+    #define all(c)  c.begin(), c.end()
+    #define llv vector< ll >
+    #define mp make_pair
+    #define endl  " 0"<< "\n"
+    
+    ll N=5 , R=2 , L=8 ;
+
+    struct dimac{
+      int t ;
+      int r ;
+      int x ; int y ;
+    };
+
+    struct pos{
+      int t ; int x ; int y ;
+    } ;
+
+
+    ll X(ll t , ll r , ll x , ll y){
+        return t*R*N*N + r*N*N + x*N + y + 1 ;
+    }
+
+    dimac get(ll val){
+      dimac temp ;
+      for(int r=0 ; r<R ;  r++){
+        for(int t=0 ; t<=L ; t++){
+          for(int x=0 ; x<N ; x++){
+            for(int y=0 ; y<N ; y++){
+               if(X(t,r,x,y)==val){
+                  temp = {t,r,x,y} ;
+                  return temp ;
+               }
+            }
+          }
+        }
+      }
+    }
+
+    void print(dimac temp){
+      cout << temp.t << " " << temp.r << " " << temp.x << " " << temp.y << "\n" ;
+    }
+
+
+    int main(){
+        #ifndef ONLINE_JUDGE
+        freopen("input.txt", "r", stdin);
+        freopen("output.txt", "w", stdout);
+        #endif
+        ios::sync_with_stdio(0);
+        cin.tie(0); cout.tie(0);
+            
+        vector<pos> a , b ;
+        int val ; cin >> val ;
+        while(val!=0){
+          if(val<0){
+            cin >> val ;
+            continue ;
+          }
+          dimac temp = get(val) ;
+           //print(temp) ;
+           pos p = {temp.t , temp.x , temp.y} ;
+           if(temp.r==0)a.pb(p) ;
+           else b.pb(p) ;
+           cin >> val ;
+        }
+
+        for(auto e:a){
+          cout << e.t << " " << e.x << " " << e.y << "\n" ;
+        }
+        cout << "\n" << "\n" ;
+        for(auto e:b){
+          cout << e.t << " " << e.x << " " << e.y << "\n" ;
+        }
+
+     
+        return 0 ;
+    }
